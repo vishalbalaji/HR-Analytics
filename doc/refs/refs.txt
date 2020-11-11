@@ -1,0 +1,12 @@
+Reference
+1. Mohammed, D., & Quddus, A. (2019). HR Analytics: A Modern Tool in HR for
+Predictive Decision Making. Journal of Management, 6(3).
+3. Marler, J. H., & Boudreau, J. W. (2017). An evidence-based review of HR Analytics.
+The International Journal of Human Resource Management, 28(1), 3-26.
+4. Song, Y. Y., & Ying, L. U. (2015). Decision tree methods: applications for classification
+and prediction. Shanghai archives of psychiatry, 27(2), 130.
+5. Speiser, J. L., Miller, M. E., Tooze, J., & Ip, E. (2019). A comparison of random forest
+variable selection methods for classification prediction modeling. Expert Systems
+with Applications, 134, 93-101.
+6. Ajit, P. (2016). Prediction of employee turnover in organizations using machine
+learning algorithms. algorithms, 4(5), C5.
