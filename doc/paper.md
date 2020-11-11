@@ -11,7 +11,7 @@ author: |
 authorrunning: Vishal Balaji D and J. Arunnehru
 bibliography: refs.bib
 numbersections: true
-csl: lncs_test.csl
+csl: lncs.csl
 link-citations: true
 abstract: |
 	The size of companies has seen an exponential growth over the years. Corporations recruit anywhere from a few hundred to a few thousand employees every year. With such rates, Human Resource Management in companies is proving to be more and more significant every day. Done manually, HRM is a laborious task, given the sheer quantity of employees. Luckily, over the years, data analytics in HR is emerging as an integral part in corporate operation. Yet, there remain a few tasks that involve human involvement, one of them being selecting candidates that are eligible for a promotion. This paper proposes a solution using decision-tree based Machine Learning algorithms to learn from past employee records to aid this decision making process. It explores the usage of two Machine Learning algorithms, Random Forest and XGBoost to predict whether an employee is eligible to receive a promotion or not and determine what factors are responsible for that prediction.
