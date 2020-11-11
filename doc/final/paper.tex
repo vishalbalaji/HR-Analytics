@@ -14,9 +14,9 @@
 %\let\origfigure=\figure
 %\let\endorigfigure=\endfigure
 %\renewenvironment{figure}[1][]{%
-	 %\origfigure[H]
+%\origfigure[H]
 %}{%
-	 %\endorigfigure
+%\endorigfigure
 %}
 
 \captionsetup[figure]{labelfont={bf},name={Fig.},labelsep=period}
@@ -39,16 +39,16 @@ Chennai - 26, \\ \texttt{\{vishalbalaji,arunnehru.aucse\}@gmail.com}}
 
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 \ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
-  \usepackage[utf8]{inputenc}
+\usepackage[utf8]{inputenc}
 \else % if luatex or xelatex
-  \ifxetex
-    \usepackage{mathspec}
-    \usepackage{xltxtra,xunicode}
-  \else
-    \usepackage{fontspec}
-  \fi
-  \defaultfontfeatures{Mapping=tex-text,Scale=MatchLowercase}
-  \newcommand{\euro}{€}
+\ifxetex
+	\usepackage{mathspec}
+	\usepackage{xltxtra,xunicode}
+\else
+	\usepackage{fontspec}
+\fi
+\defaultfontfeatures{Mapping=tex-text,Scale=MatchLowercase}
+\newcommand{\euro}{€}
 \fi
 % use microtype if available
 \IfFileExists{microtype.sty}{\usepackage{microtype}}{}
@@ -60,34 +60,34 @@ Chennai - 26, \\ \texttt{\{vishalbalaji,arunnehru.aucse\}@gmail.com}}
 % are scaled down if they would overflow the margins.
 \makeatletter
 \def\ScaleIfNeeded{%
-  \ifdim\Gin@nat@width>\linewidth
-    \linewidth
-  \else
-    \Gin@nat@width
-  \fi
+	\ifdim\Gin@nat@width>\linewidth
+		\linewidth
+	\else
+		\Gin@nat@width
+	\fi
 }
 \makeatother
 \let\Oldincludegraphics\includegraphics
 {%
- \catcode`\@=11\relax%
- \gdef\includegraphics{\@ifnextchar[{\Oldincludegraphics}{\Oldincludegraphics[width=\ScaleIfNeeded]}}%
+	\catcode`\@=11\relax%
+	\gdef\includegraphics{\@ifnextchar[{\Oldincludegraphics}{\Oldincludegraphics[width=\ScaleIfNeeded]}}%
 }%
 \ifxetex
-  \usepackage[setpagesize=false, % page size defined by xetex
-              unicode=false, % unicode breaks when used with xetex
-              xetex]{hyperref}
+	\usepackage[setpagesize=false, % page size defined by xetex
+	unicode=false, % unicode breaks when used with xetex
+	xetex]{hyperref}
 \else
-  \usepackage[unicode=true]{hyperref}
+	\usepackage[unicode=true]{hyperref}
 \fi
 \hypersetup{breaklinks=true,
-            bookmarks=true,
-            pdfauthor={},
-            pdftitle={Predictive Analysis on HRM Data: Determining Employee Promotion Factors using Random Forest and XGBoost},
-            colorlinks=true,
-            citecolor=blue,
-            urlcolor=blue,
-            linkcolor=blue,
-            pdfborder={0 0 0}}
+	bookmarks=true,
+	pdfauthor={},
+	pdftitle={Predictive Analysis on HRM Data: Determining Employee Promotion Factors using Random Forest and XGBoost},
+	colorlinks=true,
+	citecolor=blue,
+	urlcolor=blue,
+	linkcolor=blue,
+pdfborder={0 0 0}}
 \urlstyle{same}  % don't use monospace font for urls
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{6pt plus 2pt minus 1pt}
@@ -95,7 +95,8 @@ Chennai - 26, \\ \texttt{\{vishalbalaji,arunnehru.aucse\}@gmail.com}}
 \setcounter{secnumdepth}{5}
 
 \title{Predictive Analysis on HRM Data: Determining Employee Promotion
-Factors using Random Forest and XGBoost}
+Factors using Random Forest and XGBoost\thanks{SRM Institute of Science
+and Technology}}
 \author{Vishal Balaji D\inst{1}\orcidID{0000-1111-2222-3333} and J.
 Arunnehru\inst{1}\orcidID{1111-2222-3333-4444}}
 \date{}
@@ -123,30 +124,30 @@ Arunnehru\inst{1}\orcidID{1111-2222-3333-4444}}
 \titlerunning{Predictive Analysis on HRM Data}
 
 \providecommand{\tightlist}{%
-  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 
 \begin{document}
 \maketitle
 \begin{abstract}
-The size of companies has seen an exponential growth over the years.
-Corporations recruit anywhere from a few hundred to a few thousand
-employees every year. With such rates, Human Resource Management in
-companies is proving to be more and more significant every day. Done
-manually, HRM is a laborious task, given the sheer quantity of
-employees. Luckily, over the years, data analytics in HR is emerging as
-an integral part in corporate operation. Yet, there remain a few tasks
-that involve human involvement, one of them being selecting candidates
-that are eligible for a promotion. This paper proposes a solution using
-decision-tree based Machine Learning algorithms to learn from past
-employee records to aid this decision making process. It explores the
-usage of two Machine Learning algorithms, Random Forest and XGBoost to
-predict whether an employee is eligible to receive a promotion or not
-and determine what factors are responsible for that prediction.
+	The size of companies has seen an exponential growth over the years.
+ Corporations recruit anywhere from a few hundred to a few thousand
+ employees every year. With such rates, Human Resource Management in
+ companies is proving to be more and more significant every day. Done
+ manually, HRM is a laborious task, given the sheer quantity of
+ employees. Luckily, over the years, data analytics in HR is emerging as
+ an integral part in corporate operation. Yet, there remain a few tasks
+ that involve human involvement, one of them being selecting candidates
+ that are eligible for a promotion. This paper proposes a solution using
+ decision-tree based Machine Learning algorithms to learn from past
+ employee records to aid this decision making process. It explores the
+ usage of two Machine Learning algorithms, Random Forest and XGBoost to
+ predict whether an employee is eligible to receive a promotion or not
+ and determine what factors are responsible for that prediction.
 
-% lncs keyword extension 
-\keywords{Human Resource Management, Machine Learning, Random Forest,
+	% lncs keyword extension 
+		\keywords{Human Resource Management, Machine Learning, Random Forest,
 XGBoost}
-
+	
 \end{abstract}
 
 \hypertarget{introduction}{%
@@ -367,7 +368,7 @@ brings down the size of our dataset to 9330 observations total. Even
 though it is only a fraction of the original 54,690, it is still a
 significant amount and should be enough to train our algorithms along
 with being balanced. The distribution of class percentage before and
-after under sampling is shown fig.~\ref{fig:class_balancing}.
+after under sampling is shown in Fig.~\ref{fig:class_balancing}.
 
 \begin{figure}
 \centering
@@ -417,10 +418,10 @@ prevent the model from overfitting and allows it to handle much more
 complex data than decision trees.
 
 The trained RF model yielded tuning parameters which are tabulated in
-tbl.~\ref{tbl:rf_params}. \emph{Accuracy} was used to select the optimal
+Table~\ref{tbl:rf_params}. \emph{Accuracy} was used to select the optimal
 model using the largest value. The final value used for the model was
 \emph{mtry} = 28. The Confusion Matrix plots for the predictions from
-the RF model can be seen in fig.~\ref{fig:rf_cf}.
+the RF model can be seen in Fig.~\ref{fig:rf_cf}.
 
 \hypertarget{tbl:rf_params}{}
 \begin{longtable}[]{@{}lll@{}}
@@ -481,7 +482,7 @@ points. Finally, this is combined with the original models for an
 optimal solution.
 
 The Confusion Matrices plotted from the predictions of the XGB model on
-both the training and testing sets are shown in fig.~\ref{fig:xgb_cf}
+both the training and testing sets are shown in Fig.~\ref{fig:xgb_cf}
 
 \begin{figure}
 \centering
@@ -502,7 +503,7 @@ cross-validation}
 \section{Results}\label{results}}
 
 The statistics of the final trained models when evaluated on the testing
-set are tabulated below in tbl.~\ref{tbl:model_stats}
+set are tabulated below in Table~\ref{tbl:model_stats}
 
 \hypertarget{tbl:model_stats}{}
 \begin{longtable}[]{@{}lll@{}}
@@ -550,8 +551,8 @@ point improves the performance measure, weighed by then number of
 observations the node is responsible for. In our case, the performance
 measure is the \emph{Gini Index}, which is used to select the splits
 points. The plots of the 20 most important attributes according to the
-RF model and the XGB model can be seen in fig.~\ref{fig:rf_imp} and
-fig.~\ref{fig:xgb_imp} respectively.
+RF model and the XGB model can be seen in Fig.~\ref{fig:rf_imp} and
+Fig.~\ref{fig:xgb_imp} respectively.
 
 \begin{figure}
 \centering
@@ -592,7 +593,7 @@ Going forward, higher accuracy and more efficient models can be achieved
 with higher volumes of data and more careful tuning of the models'
 parameters. We can also improve the models' accuracy by retraining the
 models on just n-most important features as seen from
-fig.~\ref{fig:imp_feats}. Furthermore, we can expand this research by
+Fig.~\ref{fig:imp_feats}. Furthermore, we can expand this research by
 applying various other machine learning approaches, such as Support
 Vector Machines and Recurrent Neural Networks.
 
