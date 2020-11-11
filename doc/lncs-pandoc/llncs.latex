@@ -14,9 +14,9 @@
 %\let\origfigure=\figure
 %\let\endorigfigure=\endfigure
 %\renewenvironment{figure}[1][]{%
-	 %\origfigure[H]
+%\origfigure[H]
 %}{%
-	 %\endorigfigure
+%\endorigfigure
 %}
 
 \captionsetup[figure]{labelfont={bf},name={Fig.},labelsep=period}
@@ -39,30 +39,30 @@ $endif$
 
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 \ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
-  \usepackage[utf8]{inputenc}
+\usepackage[utf8]{inputenc}
 $if(euro)$
-  \usepackage{eurosym}
+\usepackage{eurosym}
 $endif$
 \else % if luatex or xelatex
-  \ifxetex
-    \usepackage{mathspec}
-    \usepackage{xltxtra,xunicode}
-  \else
-    \usepackage{fontspec}
-  \fi
-  \defaultfontfeatures{Mapping=tex-text,Scale=MatchLowercase}
-  \newcommand{\euro}{€}
+\ifxetex
+	\usepackage{mathspec}
+	\usepackage{xltxtra,xunicode}
+\else
+	\usepackage{fontspec}
+\fi
+\defaultfontfeatures{Mapping=tex-text,Scale=MatchLowercase}
+\newcommand{\euro}{€}
 $if(mainfont)$
-    \setmainfont{$mainfont$}
+\setmainfont{$mainfont$}
 $endif$
 $if(sansfont)$
-    \setsansfont{$sansfont$}
+\setsansfont{$sansfont$}
 $endif$
 $if(monofont)$
-    \setmonofont[Mapping=tex-ansi]{$monofont$}
+\setmonofont[Mapping=tex-ansi]{$monofont$}
 $endif$
 $if(mathfont)$
-    \setmathfont(Digits,Latin,Greek){$mathfont$}
+\setmathfont(Digits,Latin,Greek){$mathfont$}
 $endif$
 \fi
 % use microtype if available
@@ -103,35 +103,39 @@ $if(graphics)$
 % are scaled down if they would overflow the margins.
 \makeatletter
 \def\ScaleIfNeeded{%
-  \ifdim\Gin@nat@width>\linewidth
-    \linewidth
-  \else
-    \Gin@nat@width
-  \fi
+	\ifdim\Gin@nat@width>\linewidth
+		\linewidth
+	\else
+		\Gin@nat@width
+	\fi
 }
 \makeatother
 \let\Oldincludegraphics\includegraphics
 {%
- \catcode`\@=11\relax%
- \gdef\includegraphics{\@ifnextchar[{\Oldincludegraphics}{\Oldincludegraphics[width=\ScaleIfNeeded]}}%
+	\catcode`\@=11\relax%
+	\gdef\includegraphics{\@ifnextchar[{\Oldincludegraphics}{\Oldincludegraphics[width=\ScaleIfNeeded]}}%
 }%
 $endif$
 \ifxetex
-  \usepackage[setpagesize=false, % page size defined by xetex
-              unicode=false, % unicode breaks when used with xetex
-              xetex]{hyperref}
+	\usepackage[setpagesize=false, % page size defined by xetex
+	unicode=false, % unicode breaks when used with xetex
+	xetex]{hyperref}
 \else
-  \usepackage[unicode=true]{hyperref}
+	\usepackage[unicode=true]{hyperref}
 \fi
+$if(linking)$
 \hypersetup{breaklinks=true,
-            bookmarks=true,
-            pdfauthor={$author-meta$},
-            pdftitle={$title-meta$},
-            colorlinks=true,
-            citecolor=$if(citecolor)$$citecolor$$else$blue$endif$,
-            urlcolor=$if(urlcolor)$$urlcolor$$else$blue$endif$,
-            linkcolor=$if(linkcolor)$$linkcolor$$else$blue$endif$,
-            pdfborder={0 0 0}}
+	bookmarks=true,
+	pdfauthor={$author-meta$},
+	pdftitle={$title-meta$},
+	colorlinks=true,
+	citecolor=$if(citecolor)$$citecolor$$else$blue$endif$,
+	urlcolor=$if(urlcolor)$$urlcolor$$else$blue$endif$,
+	linkcolor=$if(linkcolor)$$linkcolor$$else$blue$endif$,
+pdfborder={0 0 0}}
+$else$
+	\hypersetup{nolinks=true}
+$endif$
 \urlstyle{same}  % don't use monospace font for urls
 $if(links-as-notes)$
 % Make links footnotes instead of hotlinks:
@@ -155,15 +159,15 @@ $if(verbatim-in-note)$
 $endif$
 $if(lang)$
 \ifxetex
-  \usepackage{polyglossia}
-  \setmainlanguage{$mainlang$}
+	\usepackage{polyglossia}
+	\setmainlanguage{$mainlang$}
 \else
-  \usepackage[$lang$]{babel}
+	\usepackage[$lang$]{babel}
 \fi
 $endif$
 
 $if(title)$
-\title{$title$}
+\title{$title$$if(thanks)$\thanks{$thanks$}$endif$}
 $endif$
 $if(subtitle)$
 \subtitle{$subtitle$}
@@ -183,7 +187,7 @@ $if(titlerunning)$
 $endif$
 
 \providecommand{\tightlist}{%
-  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 
 \begin{document}
 $if(title)$
@@ -191,12 +195,12 @@ $if(title)$
 $endif$
 $if(abstract)$
 \begin{abstract}
-$abstract$
+	$abstract$
 
-% lncs keyword extension 
-$if(keywords)$
-\keywords{$keywords$}
-$endif$
+	% lncs keyword extension 
+	$if(keywords)$
+	\keywords{$keywords$}
+	$endif$
 
 \end{abstract}
 $endif$
@@ -207,9 +211,9 @@ $include-before$
 $endfor$
 $if(toc)$
 {
-\hypersetup{linkcolor=black}
-\setcounter{tocdepth}{$toc-depth$}
-\tableofcontents
+	\hypersetup{linkcolor=black}
+	\setcounter{tocdepth}{$toc-depth$}
+	\tableofcontents
 }
 $endif$
 $body$
