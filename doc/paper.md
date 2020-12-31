@@ -48,7 +48,9 @@ The remainder of the research paper is organized as follows: A literature review
 
 # Literature Review
 
-A. H. Marler and J. W. Boudreau in @Marler2017 discuss the adoption of HR analytics by organizations and attempts to answer some key questions regarding its definition, inner workings, effectiveness, its impact on corporate operation and its success factors by conduct evidence-based reviews of articles in peer-reviewed journals. K. Simbeck in @Simbeck2019 builds upon previous literature on the discussion about the ethical implications of HR analytics. Quinn, Rycraft, and Schoech as well as J. Liu et al use Logistic regression  to predict employee turnover in \[@Quinn2002, @Liu2019\]. The authors in @Quinn2002 use this in conjunction with a neural network model from Statsoft. They use a dataset comprised of 15 variables and produce a model that can predict turnover with anywhere between 60-70% accuracy. The authors in @Liu2019 contrast Logistic Regression with other supervised learning approaches like Random Forest and AdaBoost algorithms in determining factors that influence an employee's promotion. From their analysis, the Random Forest classifier outperforms the other models, with accuracy and AUC of 85.6% and 88.9% respectively along with a precision of 83.4%. Z. Jin et al. in @Jin2020 predicts employee turnover for companies using classification algorithms and Survival Analysis. They employ a variation of the Random Forest algorithm named RFRSF, which combines survival analysis for censored data processing and ensemble learning for turnover behavior prediction. The authors contrast the results their model with those of traditional machine learning techniques such as Naïve Bayes, Decision Tree and Random Forest and their algorithm predicts employee turnover with 84.65% accuracy.
+A. H. Marler and J. W. Boudreau in @Marler2017 discuss the adoption of HR analytics by organizations and attempts to answer some key questions regarding its definition, inner workings, effectiveness, its impact on corporate operation and its success factors by conduct evidence-based reviews of articles in peer-reviewed journals. K. Simbeck in @Simbeck2019 builds upon previous literature on the discussion about the ethical implications of HR analytics.
+
+Quinn, Rycraft, and Schoech as well as J. Liu et al use Logistic regression to predict employee turnover in \[@Quinn2002, @Liu2019\]. The authors in @Quinn2002 use this in conjunction with a neural network model from Statsoft. They use a dataset comprised of 15 variables and produce a model that can predict turnover with anywhere between 60-70% accuracy. The authors in @Liu2019 contrast Logistic Regression with other supervised learning approaches like Random Forest and AdaBoost algorithms in determining factors that influence an employee's promotion. From their analysis, the Random Forest classifier outperforms the other models, with accuracy and AUC of 85.6% and 88.9% respectively along with a precision of 83.4%. Z. Jin et al. in @Jin2020 predicts employee turnover for companies using classification algorithms and Survival Analysis. They employ a variation of the Random Forest algorithm named RFRSF, which combines survival analysis for censored data processing and ensemble learning for turnover behavior prediction. The authors contrast the results their model with those of traditional machine learning techniques such as Naïve Bayes, Decision Tree and Random Forest and their algorithm predicts employee turnover with 84.65% accuracy.
  
 # Methodology
 
@@ -58,13 +60,13 @@ A. H. Marler and J. W. Boudreau in @Marler2017 discuss the adoption of HR analyt
 
 The variable to be predicted by the model, i.e., the target variable is the **is_promoted** column, which indicates whether the employee with particular attributes has been promoted or not. Our algorithms will be trained to output a prediction of what the value of this variable will be, based on the values of the other variables of a particular observation.
 
-As mentioned above in the dataset description, the target variable can have 2 values: *0*, which indicates that the particular employee has not been promoted or *1*, which indicates that the particular employee has been promoted.
+As mentioned in the dataset description, the target variable can have 2 values: *0*, which indicates that the particular employee has not been promoted or *1*, which indicates that the particular employee has been promoted.
 
 The target variable is currently in integer encoding, which means that the possible values of this variable are in the form of a single integer, each representing one of the output classes. But, allowing the model to assume a natural order between these two categories may result in poor performance or unexpected results, such as predictions halfway between the categories. So, we encode the target variable using a method called One-hot encoding. One-hot encoding is a method of representing categorical variables in a more expressive manner. It helps to indicate to the algorithm that the expected output is to be categorical and not continuous.
 
 To perform one-hot encoding, we use the integer representation of our target variable and transform them into an array of binary digits whose length is equal to the total number of possible values(2 in this case). The digit in the array whose position corresponds to our integer value is set to 1 while the other values are set to 0, i.e., *0* becomes *[1, 0]*, *1* becomes *[0, 1]* etc.
 
-To aid in better visualization of the data, however, the values of the target variable *0* and *1* will be represented as *no* and *yes* respectively, where no means that the particular employee has not been promoted and *yes* means that the employee has been promoted.
+To aid in better visualization of the data, however, the values of the target variable *0* and *1* are represented as *no* and *yes* respectively in all figures, where no means that the particular employee has not been promoted and *yes* means that the employee has been promoted.
 
 <!-- What exactly ‘yes’ and ‘no’ represents here? -->
 
@@ -111,7 +113,11 @@ The dataset is split into a training set and a testing set where the testing set
 
 <!-- Why k-value was assigned to 5? Justify it with proper evidence and final value is 28. -->
  
-A Random Forest(RF) and XGBoost(XGB) model will be will be trained on the training set and be evaluated using the K-fold cross-validation method for the testing set. In this case, the value of K is taken to be 5. Confusion matrices will be generated for both models, which will help us determine the confidence with which the models classify observations as *yes* or *no*.
+A Random Forest(RF) and XGBoost(XGB) model will be will be trained on the training set and be evaluated using the K-fold cross-validation method for the testing set. 
+
+To minimize computational power, considering that the dataset is fairly large in size, as well as to reduce the bias of the algorithm, we need to select a small value for K. Here, we arbitrarily choose K to be 5, since our dataset has 9330 observations, which can evenly be divided into 5 parts.
+
+Confusion matrices will be generated for both models, which will help us determine the confidence with which the models classify observations as *yes* or *no*.
 
 ### Random Forest
 
@@ -121,7 +127,14 @@ The main drawback with decision trees is their low bias and high variance. The R
 
 <!-- Explain mtry -->
 
-The trained RF model yielded tuning parameters which are tabulated in @tbl:rf_params. *Accuracy* was used to select the optimal model using the largest value. The final value used for the model was *mtry* = 28. The Confusion Matrix plots for the predictions from the RF model can be seen in @fig:rf_cf.
+
+The standard recursive partitioning algorithm of a Decision Tree starts with all the data and does an exhaustive search over all variables and possible split points to find one that best explains the entire data, thereby reducing the node impurity the most. However, for large trees the likes of which are used by the Random Forest algorithm, such an approach can get very computationally expensive. To avoid this problem, the Random Forest algorithm uses a variable called *mtry* for each split. The algorithm then randomly selects *mtry* predictor variables from the dataset, which ensures that not all the variables are included in the split, while also selecting a different set of variables for each split.
+
+Three models were trained with 3 randomly assigned values for *mtry*. Out of those, the best performing model was that with *mtry* = 28, with an accuracy of approximately 82%.
+
+The training yielded tuning parameters for all three models which are tabulated in @tbl:rf_params. The *Accuracy* metric was used to select the optimal model using the largest value.
+
+The Confusion Matrix plots for the predictions from the RF model can be seen in @fig:rf_cf.
 
 Table: Tuning parameters for RF model {#tbl:rf_params}
 
@@ -155,30 +168,23 @@ The Confusion Matrices plotted from the predictions of the XGB model on both the
 Confusion Matrices of XBG model evaluated with 5-fold cross-validation
 :::
 
-<!--\newpage-->
+<!-- \newpage -->
 # Results
 
-The statistics of the final trained models when evaluated on the testing set are tabulated below in @tbl:model_stats
+The statistics of the final trained models when evaluated on the testing set are tabulated below in @tbl:model_stats.
 
 Table: Final statistics of the trained RF and XGB models evaluated on the testing set {#tbl:model_stats}
 
-| Attribute              | RF               | XGB              |
-|------------------------|------------------|------------------|
-| Accuracy               | 0.8199           | 0.8339           |
-| 95% CI                 | (0.8017, 0.8371) | (0.8162, 0.8505) |
-| No Information Rate    | 0.5              | 0.5              |
-| P-Value [Acc > NIR]    | < 2.2e-16        | < 2.2e-16        |
-| Kappa                  | 0.6399           | 0.6677           |
-| Mcnemar's Test P-Value | 6.889e-07        | 1.277e-07        |
-| Sensitivity            | 0.7706           | 0.7835           |
-| Specificity            | 0.8692           | 0.8842           |
-| Pos Pred Value         | 0.8549           | 0.8713           |
-| Neg Pred Value         | 0.7912           | 0.8033           |
-| Prevalence             | 0.5000           | 0.5000           |
-| Detection Rate         | 0.3853           | 0.3917           |
-| Detection Prevalence   | 0.4507           | 0.4496           |
-| Balanced Accuracy      | 0.8199           | 0.8339           |
-| 'Positive' Class       | no               | no               |
+| Attribute              | RF        | XGB       |
+|------------------------|-----------|-----------|
+| Accuracy               | 0.8199    | 0.8339    |
+| P-Value [Acc > NIR]    | < 2.2e-16 | < 2.2e-16 |
+| Kappa                  | 0.6399    | 0.6677    |
+| Sensitivity            | 0.7706    | 0.7835    |
+| Specificity            | 0.8692    | 0.8842    |
+| Balanced Accuracy      | 0.8199    | 0.8339    |
+
+The above statistics are used to evaluate and describe the models. *Accuracy* is the percentage of correctly classified instances out of all instances. The *P-value* is a measure of the probability that an observed difference could have just by random chance. *Kappa* or *Cohen's Kappa* is similar to *Accuracy*, but it is normalized at the baseline of random chance on the dataset. *Sensitivity* describes the model's ability to predict true positives, while *Specificity* is a metric that evaluates the model's ability to predict true negatives. *Balanced Accuracy* is calculated as the average of the proportion of correct predictions from each individual class.
 
 The *Accuracy* and *Kappa* values of both models are very similar, indicating that both models perform very similarly for this particular dataset. Both models perform consistently over the testing set with regards to their performance on the training set and are able to classify the datapoints. However, the XGB model has an accuracy of 83.39% which is slightly higher than that of the RF model, which is approximately 82%. The XBG model also clearly outperforms the RF model in almost every other aspect, which was as expected.
 
@@ -195,7 +201,7 @@ Both models assign an 'Feature Importance' score to each attribute, which is cal
 
 We notice that the list of the 10 most important features according to both the Random Forest and XGBoost models are nearly identical with the exception of no_of_trainings and departmentHR. This tells us that the other attributes can be discarded to get improved performance from the models. 
 
-\newpage
+<!-- \newpage -->
 # Conclusion
 
 In this paper, we have demonstrated the use of the Random Forest and XGBoost machine learning algorithms in predicting an employee's promotion status. We also used the trained models to determine which attributes have the most impact on said promotion status. Through this, we can see the use of machine learning as a predictive decision making tool or at least a suggestive tool is a fully viable solution for the presented problem. With fairly limited data and computational resources, we were able to train algorithms to perform with significantly good accuracy. 
