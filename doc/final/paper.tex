@@ -8,6 +8,7 @@
 \usepackage{float}
 \usepackage[labelfont=bf]{caption}
 \usepackage{subfig}
+\usepackage{cite}
 \emergencystretch=1em
 % use upquote if available, for straight quotes in verbatim environments
 
@@ -23,9 +24,9 @@
 
 % lncs 
 \usepackage{makeidx}
-\institute{\textsuperscript{1} Department of Computer Science and
-Engineering, SRM Institute of Science and Technology, Vadapalani Campus,
-Chennai - 26, \\ \texttt{\{vishalbalaji,arunnehru.aucse\}@gmail.com}}
+\institute{Department of Computer Science and Engineering,\\
+SRM Institute of Science and Technology, Vadapalani Campus, Chennai -
+26, \\ \texttt{\{vishalbalaji,arunnehru.aucse\}@gmail.com}}
 
 \makeatletter
 \let\oldsubsubsection\subsubsection
@@ -97,8 +98,7 @@ pdfborder={0 0 0}}
 \title{Predictive Analysis on HRM Data: Determining Employee Promotion
 Factors using Random Forest and XGBoost\thanks{SRM Institute of Science
 and Technology}}
-\author{Vishal Balaji D\inst{1}\orcidID{0000-1111-2222-3333} and J.
-Arunnehru\inst{1}\orcidID{1111-2222-3333-4444}}
+\author{Vishal Balaji D and J. Arunnehru\orcidID{0000-0002-2245-5001}}
 \date{}
 \makeatletter
 \@ifpackageloaded{subfig}{}{\usepackage{subfig}}
@@ -181,14 +181,15 @@ XGBoost\cite{ref_ChenG16} algorithms, to analyze a
 publicly available HR dataset and determine what factors help elevate an
 employee's chances of getting promoted.
 
-In this paper, we have classified the HRM data to predict whether an
-employee is a viable for a promotion. The data required for this purpose
-was collected by an anonymous organization and made available to the
-public through \href{https://www.kaggle.com}{Kaggle}. This dataset
-consists of various differentiating features for previous candidates who
-were shortlisted for a promotion and whether or not they were promoted.
-This dataset consists of 14 different attributes or columns, with 54,808
-total observations or rows. A comprehensive summary of the dataset is as
+In this paper, we have performed exploratory analysis on HRM data and
+used machine learning to find the factors that more commonly lead to an
+employee being considered for a promotion during an appraisal. The data
+required for this purpose was collected by an anonymous organization and
+made available to the public. This dataset consists of various
+differentiating features for previous candidates who were shortlisted
+for a promotion and whether or not they were promoted. This dataset
+consists of 14 different attributes or columns, with 54,808 total
+observations or rows. A comprehensive summary of the dataset is as
 follows:
 
 \begin{itemize}
@@ -225,7 +226,7 @@ follows:
   employee. Possible values are: \emph{referred}, \emph{sourcing},
   \emph{other}.
 \item
-  \textbf{no\_of trainings(int)}: Describes the number of training
+  \textbf{no\_of\_trainings(int)}: Describes the number of training
   programs completed by the employee. Range: from \emph{1} to \emph{10}.
 \item
   \textbf{age(int)}: Describes the age of the employee.
@@ -269,9 +270,24 @@ A. H. Marler and J. W. Boudreau in
 \cite{ref_Marler2017} discuss the adoption of HR
 analytics by organizations and attempts to answer some key questions
 regarding its definition, inner workings, effectiveness, its impact on
-corporate operation and its success factors. They conduct evidence-based
-reviews of articles in peer-reviewed journals and conclude that the
-available evidence is too sparse. Z. Jin et al.~in
+corporate operation and its success factors by conduct evidence-based
+reviews of articles in peer-reviewed journals. K. Simbeck in
+\cite{ref_Simbeck2019} builds upon previous
+literature on the discussion about the ethical implications of HR
+analytics. Quinn, Rycraft, and Schoech as well as J. Liu et al use
+Logistic regression to predict employee turnover in
+{[}\cite{ref_Quinn2002},
+\cite{ref_Liu2019}{]}. The authors in
+\cite{ref_Quinn2002} use this in conjunction with
+a neural network model from Statsoft. They use a dataset comprised of 15
+variables and produce a model that can predict turnover with anywhere
+between 60-70\% accuracy. The authors in
+\cite{ref_Liu2019} contrast Logistic Regression
+with other supervised learning approaches like Random Forest and
+AdaBoost algorithms in determining factors that influence an employee's
+promotion. From their analysis, the Random Forest classifier outperforms
+the other models, with accuracy and AUC of 85.6\% and 88.9\%
+respectively along with a precision of 83.4\%. Z. Jin et al.~in
 \cite{ref_Jin2020} predicts employee turnover for
 companies using classification algorithms and Survival Analysis. They
 employ a variation of the Random Forest algorithm named RFRSF, which
@@ -279,15 +295,49 @@ combines survival analysis for censored data processing and ensemble
 learning for turnover behavior prediction. The authors contrast the
 results their model with those of traditional machine learning
 techniques such as Naïve Bayes, Decision Tree and Random Forest and
-their algorithm predicts employee turnover with 84.65\% accuracy. J. Liu
-et al.~in \cite{ref_Liu2019} employ various
-supervised learning approaches, utilising Logistic Regression, Random
-Forest and AdaBoost algorithms. From their analysis, the Random Forest
-classifier outperforms the other models, with accuracy and AUC of 85.6\%
-and 88.9\% respectively along with a precision of 83.4\%.
+their algorithm predicts employee turnover with 84.65\% accuracy.
 
 \hypertarget{methodology}{%
 \section{Methodology}\label{methodology}}
+
+\hypertarget{preprocessing}{%
+\subsection{Preprocessing}\label{preprocessing}}
+
+The variable to be predicted by the model, i.e., the target variable is
+the \textbf{is\_promoted} column, which indicates whether the employee
+with particular attributes has been promoted or not. Our algorithms will
+be trained to output a prediction of what the value of this variable
+will be, based on the values of the other variables of a particular
+observation.
+
+As mentioned above in the dataset description, the target variable can
+have 2 values: \emph{0}, which indicates that the particular employee
+has not been promoted or \emph{1}, which indicates that the particular
+employee has been promoted.
+
+The target variable is currently in integer encoding, which means that
+the possible values of this variable are in the form of a single
+integer, each representing one of the output classes. But, allowing the
+model to assume a natural order between these two categories may result
+in poor performance or unexpected results, such as predictions halfway
+between the categories. So, we encode the target variable using a method
+called One-hot encoding. One-hot encoding is a method of representing
+categorical variables in a more expressive manner. It helps to indicate
+to the algorithm that the expected output is to be categorical and not
+continuous.
+
+To perform one-hot encoding, we use the integer representation of our
+target variable and transform them into an array of binary digits whose
+length is equal to the total number of possible values(2 in this case).
+The digit in the array whose position corresponds to our integer value
+is set to 1 while the other values are set to 0, i.e., \emph{0} becomes
+\emph{{[}1, 0{]}}, \emph{1} becomes \emph{{[}0, 1{]}} etc.
+
+To aid in better visualization of the data, however, the values of the
+target variable \emph{0} and \emph{1} will be represented as \emph{no}
+and \emph{yes} respectively, where no means that the particular employee
+has not been promoted and \emph{yes} means that the employee has been
+promoted.
 
 \hypertarget{feature-engineering}{%
 \subsection{Feature Engineering}\label{feature-engineering}}
@@ -315,33 +365,34 @@ the duplicate values, we have 54,690 observations left.
 To deal with missing values, we separate out the observations with a
 NULL value for at least one variable. We also notice that only two
 columns, \textbf{education} and \textbf{previous\_year\_rating} contain
-null values in 2398 and 4062 observations, respectively. We rectify this
-by filling in the missing attribute with the mode of that particular
-attribute in all the observations where the value of the target variable
-is the same as in the column with the missing value. This approach
-allows us to eliminate observations with missing values while still
-retaining the size of our dataset.
+null values in 2398 and 4062 observations, respectively.
 
-\hypertarget{preprocessing}{%
-\subsection{Preprocessing}\label{preprocessing}}
+We rectify this by filling in the missing attribute with the mode of
+that particular attribute in all the observations where the value of the
+target variable is the same as in the column with the missing value. The
+steps to do so are as follows:
 
-The data is pre-processed to make it suitable for our algorithms. Since
-the target variable is categorical in nature, encode its values using
-one-hot encoding to optimize our models' performance. One-hot encoding
-is a method of representing categorical variables in a way which can be
-parsed by our machine learning models. To do so, we use the integer
-representation of our target variable, where 0 corresponds to the value
-\emph{no} and 1 corresponds to the value \emph{yes} and transform them
-into an array of binary digits whose length is equal to the total number
-of possible values(2 in our case). The digit in the array whose position
-corresponds to our integer value is set to 1 while the other values are
-set to 0, i.e., \emph{0} becomes \emph{{[}1, 0{]}}, \emph{1} becomes
-\emph{{[}0, 1{]}} etc.
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  For each observation with a missing value, the mode of the non-missing
+  values of the variable with the missing value is calculated, for each
+  value of the target variable. For example, in out dataset, the mode is
+  found for all the available values of the \textbf{education} variable,
+  for all the observations where the value of the target variable is
+  \emph{0}. The same is done for observations where the target variable
+  is \emph{1}.
+\item
+  The missing values are then filled with the calculated mode
+  corresponding to the value of the target variable.
+\item
+  This process is repeated for each of the columns where values are
+  missing.
+\end{enumerate}
 
-We also rename the values in the target column from ``0'' and ``1'' to
-``no'' and ``yes'' so that the algorithm recognizes as categorical
-variables. This will also aid us to make better visualizations of the
-data.
+This approach allows us to eliminate observations with missing values
+while still retaining the size of our dataset.
 
 \hypertarget{balancing-classes}{%
 \subsection{Balancing Classes}\label{balancing-classes}}
@@ -397,8 +448,8 @@ A Random Forest(RF) and XGBoost(XGB) model will be will be trained on
 the training set and be evaluated using the K-fold cross-validation
 method for the testing set. In this case, the value of K is taken to be
 5. Confusion matrices will be generated for both models, which will help
-us determine the accuracy with which the models classify observations as
-\emph{yes} or \emph{no}.
+us determine the confidence with which the models classify observations
+as \emph{yes} or \emph{no}.
 
 \hypertarget{random-forest}{%
 \subsubsection{Random Forest}\label{random-forest}}
@@ -558,9 +609,9 @@ Fig.~\ref{fig:xgb_imp} respectively.
 \centering
 
 \subfloat[Feature importance plot from RF
-model]{\includegraphics[width=0.8\textwidth,height=0.4\textheight]{./imgs/rf_feat_imp.png}\label{fig:rf_imp}}\\
+model]{\includegraphics[width=0.8\textwidth,height=0.35\textheight]{./imgs/rf_feat_imp.png}\label{fig:rf_imp}}\\
 \subfloat[Feature Importance plot from XGB
-model]{\includegraphics[width=0.8\textwidth,height=0.4\textheight]{./imgs/xb_feat_imp.png}\label{fig:xgb_imp}}
+model]{\includegraphics[width=0.8\textwidth,height=0.35\textheight]{./imgs/xb_feat_imp.png}\label{fig:xgb_imp}}
 
 \caption{20 most important features as scored by the RF and XGB models}
 
@@ -575,6 +626,8 @@ both the Random Forest and XGBoost models are nearly identical with the
 exception of no\_of\_trainings and departmentHR. This tells us that the
 other attributes can be discarded to get improved performance from the
 models.
+
+\newpage
 
 \hypertarget{conclusion}{%
 \section{Conclusion}\label{conclusion}}
@@ -617,18 +670,28 @@ boosting system. CoRR. abs/1603.02754, (2016).}
 of HR analytics. The International Journal of Human Resource Management.
 28, 3--26 (2017).}
 
-\bibitem{ref_Jin2020}
-{Jin, Z., Shang, J., Zhu, Q., Ling, C., Xie, W., Qiang,
-B.: RFRSF: Employee turnover prediction based on random forests and
-survival analysis. In: Huang, Z., Beek, W., Wang, H., Zhou, R., and
-Zhang, Y. (eds.) Web information systems engineering -- WISE 2020. pp.
-503--515. Springer International Publishing, Cham (2020).}
+\bibitem{ref_Simbeck2019}
+{Simbeck, K.: HR analytics and ethics. IBM Journal of
+Research and Development. 63, 9:1--9:12 (2019).}
+
+\bibitem{ref_Quinn2002}
+{MSW, A.Q., Rycraft, J.R., PhD, D.S.: Building a model to
+predict caseworker and supervisor turnover using a neural network and
+logistic regression. Journal of Technology in Human Services. 19, 65--85
+(2002).}
 
 \bibitem{ref_Liu2019}
 {Liu, J., Wang, T., Li, J., Huang, J., Yao, F., He, R.: A
 data-driven analysis of employee promotion: The role of the position of
 organization. In: 2019 IEEE international conference on systems,man and
 cybernetics (SMC). pp. 4056--4062 (2019).}
+
+\bibitem{ref_Jin2020}
+{Jin, Z., Shang, J., Zhu, Q., Ling, C., Xie, W., Qiang,
+B.: RFRSF: Employee turnover prediction based on random forests and
+survival analysis. In: Huang, Z., Beek, W., Wang, H., Zhou, R., and
+Zhang, Y. (eds.) Web information systems engineering -- WISE 2020. pp.
+503--515. Springer International Publishing, Cham (2020).}
 
 \end{thebibliography}
 

@@ -5,17 +5,18 @@ title: "Predictive Analysis on HRM Data: Determining Employee Promotion Factors 
 titlerunning: "Predictive Analysis on HRM Data"
 thanks: SRM Institute of Science and Technology
 institute: |
-	| \textsuperscript{1} Department of Computer Science and Engineering, SRM Institute of Science and Technology, Vadapalani Campus, Chennai - 26
+	| Department of Computer Science and Engineering, 
+	| SRM Institute of Science and Technology, Vadapalani Campus, Chennai - 26
 email: \{vishalbalaji,arunnehru.aucse\}\@gmail.com
 author: |
-	Vishal Balaji D\inst{1}\orcidID{0000-1111-2222-3333} and
-	J. Arunnehru\inst{1}\orcidID{1111-2222-3333-4444}
+	Vishal Balaji D and
+	J. Arunnehru\orcidID{0000-0002-2245-5001}
 authorrunning: Vishal Balaji D and J. Arunnehru
 bibliography: refs.bib
 numbersections: true
 csl: lncs.csl
-link-citations: true
 linking: true
+link-citations: true
 abstract: |
 	The size of companies has seen an exponential growth over the years. Corporations recruit anywhere from a few hundred to a few thousand employees every year. With such rates, Human Resource Management in companies is proving to be more and more significant every day. Done manually, HRM is a laborious task, given the sheer quantity of employees. Luckily, over the years, data analytics in HR is emerging as an integral part in corporate operation. Yet, there remain a few tasks that involve human involvement, one of them being selecting candidates that are eligible for a promotion. This paper proposes a solution using decision-tree based Machine Learning algorithms to learn from past employee records to aid this decision making process. It explores the usage of two Machine Learning algorithms, Random Forest and XGBoost to predict whether an employee is eligible to receive a promotion or not and determine what factors are responsible for that prediction.
 keywords: Human Resource Management, Machine Learning, Random Forest, XGBoost
@@ -27,7 +28,7 @@ HR analytics[@Quddus2019] in corporations plays a major role in restructuring th
 
 Machine Learning has been used to solve similar problems in different domains for several years now. In areas where some kind of human intervention is necessary, a well trained machine learning algorithm has been proven to be an acceptable substitute, if not an ideal solution. Here, we will be using machine learning techniques to not only predict the promotion status of future employees, but to also determine which of the provided attributes from the employees’ data is most relevant to making this prediction. In this paper, we explore the application the two different machine learning algorithms, namely Random Forest[@Breiman2001] and XGBoost[@ChenG16] algorithms, to analyze a publicly available HR dataset and determine what factors help elevate an employee's chances of getting promoted.
 
-In this paper, we have classified the HRM data to predict whether an employee is a viable for a promotion. The data required for this purpose was collected by an anonymous organization and made available to the public through [Kaggle](https://www.kaggle.com). This dataset consists of various differentiating features for previous candidates who were shortlisted for a promotion and whether or not they were promoted. This dataset consists of 14 different attributes or columns, with 54,808 total observations or rows. A comprehensive summary of the dataset is as follows:
+In this paper, we have performed exploratory analysis on HRM data and used machine learning to find the factors that more commonly lead to an employee being considered for a promotion during an appraisal. The data required for this purpose was collected by an anonymous organization and made available to the public. This dataset consists of various differentiating features for previous candidates who were shortlisted for a promotion and whether or not they were promoted. This dataset consists of 14 different attributes or columns, with 54,808 total observations or rows. A comprehensive summary of the dataset is as follows:
 
 * **employee_id(int)**: Unique id of the employee.
 * **department(string)**: The department to which the employee belongs to. Possible values are: *Analytics*, *Finance* , *HR* , *Legal* , *Operations*, *Procurement*, *R&D*, *Sales & Marketing*, *Technology*.
@@ -35,7 +36,7 @@ In this paper, we have classified the HRM data to predict whether an employee is
 * **education(string)**: Describes the level of education of the employee. Possible values are: *Bachelor\*s*, *Below Secondary*, *Master\*s & above*.
 * **gender(string)**: Gender of the employee. Possible values are: *f*, *m*.
 * **recruitment_channel(string)**: Channel of recruitment of the employee. Possible values are: *referred*, *sourcing*, *other*.
-* **no_of trainings(int)**: Describes the number of training programs completed by the employee. Range: from *1* to *10*.
+* **no_of_trainings(int)**: Describes the number of training programs completed by the employee. Range: from *1* to *10*.
 * **age(int)**: Describes the age of the employee. previous_year_rating (int): Employee rating from previous year. Range from *1* to *5*.
 * **length_of_service(int)**: The service length of the employee in years.
 * **KPIs_met >80%(int)**: Describes whether the employee’s *Key Performance Indicators* score are greater than 80%. Value is *1* if yes, else *0*.
@@ -43,14 +44,29 @@ In this paper, we have classified the HRM data to predict whether an employee is
 * **avg_training_score(int)**: Employee’s average training score in training evaluations.
 * **is_promoted(int)**: Whether the employee was promoted or not. Value is *1* if yes, else *0*.
 
-
 The remainder of the research paper is organized as follows: A literature review documenting past approaches and research similar to that in this paper is represented in Section [2](#literature-review). Section [3](#methodology) provides a detailed description of the working dataset, outlines the preparation of the dataset and elaborates on the two methodologies used in this paper, i.e., Random Forest and XGBoost classifiers. In Section [4](#results), we compare the outcomes of the two methods and elaborately discuss the results. We conclude the paper in Section [5](#conclusion) with references and future work.
 
 # Literature Review
 
-A. H. Marler and J. W. Boudreau in @Marler2017 discuss the adoption of HR analytics by organizations and attempts to answer some key questions regarding its definition, inner workings, effectiveness, its impact on corporate operation and its success factors. They conduct evidence-based reviews of articles in peer-reviewed journals and conclude that the available evidence is too sparse. Z. Jin et al. in @Jin2020 predicts employee turnover for companies using classification algorithms and Survival Analysis. They employ a variation of the Random Forest algorithm named RFRSF, which combines survival analysis for censored data processing and ensemble learning for turnover behavior prediction. The authors contrast the results their model with those of traditional machine learning techniques such as Naïve Bayes, Decision Tree and Random Forest and their algorithm predicts employee turnover with 84.65% accuracy. J. Liu et al. in @Liu2019 employ various supervised learning approaches, utilising Logistic Regression, Random Forest and AdaBoost algorithms. From their analysis, the Random Forest classifier outperforms the other models, with accuracy and AUC of 85.6% and 88.9% respectively along with a precision of 83.4%.
+A. H. Marler and J. W. Boudreau in @Marler2017 discuss the adoption of HR analytics by organizations and attempts to answer some key questions regarding its definition, inner workings, effectiveness, its impact on corporate operation and its success factors by conduct evidence-based reviews of articles in peer-reviewed journals. K. Simbeck in @Simbeck2019 builds upon previous literature on the discussion about the ethical implications of HR analytics. Quinn, Rycraft, and Schoech as well as J. Liu et al use Logistic regression  to predict employee turnover in \[@Quinn2002, @Liu2019\]. The authors in @Quinn2002 use this in conjunction with a neural network model from Statsoft. They use a dataset comprised of 15 variables and produce a model that can predict turnover with anywhere between 60-70% accuracy. The authors in @Liu2019 contrast Logistic Regression with other supervised learning approaches like Random Forest and AdaBoost algorithms in determining factors that influence an employee's promotion. From their analysis, the Random Forest classifier outperforms the other models, with accuracy and AUC of 85.6% and 88.9% respectively along with a precision of 83.4%. Z. Jin et al. in @Jin2020 predicts employee turnover for companies using classification algorithms and Survival Analysis. They employ a variation of the Random Forest algorithm named RFRSF, which combines survival analysis for censored data processing and ensemble learning for turnover behavior prediction. The authors contrast the results their model with those of traditional machine learning techniques such as Naïve Bayes, Decision Tree and Random Forest and their algorithm predicts employee turnover with 84.65% accuracy.
  
 # Methodology
+
+## Preprocessing
+
+<!-- Why one-hot encoding is used? -->
+
+The variable to be predicted by the model, i.e., the target variable is the **is_promoted** column, which indicates whether the employee with particular attributes has been promoted or not. Our algorithms will be trained to output a prediction of what the value of this variable will be, based on the values of the other variables of a particular observation.
+
+As mentioned above in the dataset description, the target variable can have 2 values: *0*, which indicates that the particular employee has not been promoted or *1*, which indicates that the particular employee has been promoted.
+
+The target variable is currently in integer encoding, which means that the possible values of this variable are in the form of a single integer, each representing one of the output classes. But, allowing the model to assume a natural order between these two categories may result in poor performance or unexpected results, such as predictions halfway between the categories. So, we encode the target variable using a method called One-hot encoding. One-hot encoding is a method of representing categorical variables in a more expressive manner. It helps to indicate to the algorithm that the expected output is to be categorical and not continuous.
+
+To perform one-hot encoding, we use the integer representation of our target variable and transform them into an array of binary digits whose length is equal to the total number of possible values(2 in this case). The digit in the array whose position corresponds to our integer value is set to 1 while the other values are set to 0, i.e., *0* becomes *[1, 0]*, *1* becomes *[0, 1]* etc.
+
+To aid in better visualization of the data, however, the values of the target variable *0* and *1* will be represented as *no* and *yes* respectively, where no means that the particular employee has not been promoted and *yes* means that the employee has been promoted.
+
+<!-- What exactly ‘yes’ and ‘no’ represents here? -->
 
 ## Feature Engineering
 
@@ -62,18 +78,23 @@ Even though we have a large volume of data, we cannot be sure that all the obser
 
 ### Removing Missing Values
 
-To deal with missing values, we separate out the observations with a NULL value for at least one variable. We also notice that only two columns, **education** and **previous_year_rating** contain null values in 2398 and 4062 observations, respectively. We rectify this by filling in the missing attribute with the mode of that particular attribute in all the observations where the value of the target variable is the same as in the column with the missing value. This approach allows us to eliminate observations with missing values while still retaining the size of our dataset.
+To deal with missing values, we separate out the observations with a NULL value for at least one variable. We also notice that only two columns, **education** and **previous_year_rating** contain null values in 2398 and 4062 observations, respectively.
 
-## Preprocessing
+<!-- Which algorithm is used to fill the missing values in the dataset? -->
 
-The data is pre-processed to make it suitable for our algorithms. Since the target variable is categorical in nature, encode its values using one-hot encoding to optimize our models' performance. One-hot encoding is a method of representing categorical variables in a way which can be parsed by our machine learning models. To do so, we use the integer representation of our target variable, where 0 corresponds to the value *no* and 1 corresponds to the value *yes* and transform them into an array of binary digits whose length is equal to the total number of possible values(2 in our case). The digit in the array whose position corresponds to our integer value is set to 1 while the other values are set to 0, i.e., *0* becomes *[1, 0]*, *1* becomes *[0, 1]* etc.
+We rectify this by filling in the missing attribute with the mode of that particular attribute in all the observations where the value of the target variable is the same as in the column with the missing value. The steps to do so are as follows:
 
-We also rename the values in the target column from “0” and “1” to “no” and “yes” so that the algorithm recognizes as categorical variables. This will also aid us to make better visualizations of the data.
+1. For each observation with a missing value, the mode of the non-missing values of the variable with the missing value is calculated, for each value of the target variable. For example, in out dataset, the mode is found for all the available values of the **education** variable, for all the observations where the value of the target variable is *0*. The same is done for observations where the target variable is *1*.
+2. The missing values are then filled with the calculated mode corresponding to the value of the target variable.
+3. This process is repeated for each of the columns where values are missing.
 
+This approach allows us to eliminate observations with missing values while still retaining the size of our dataset.
 
 ## Balancing Classes
 
 In this dataset, there is a clear imbalance between the values of our target variables. Out of 54,690 observations, only 4665 observations are of class “no”, while 50,025 observations are of class “yes”. This is a significant issue, as the difference exceeds more than 50% of our total data. For a machine learning algorithm to be properly able to parse and understand the given data, there should ideally be an equal distribution of the number of examples with the different classes that the model is meant to classify data into. When one class takes precedence over the other class in the dataset, the algorithm is less likely to learn what the properties of each class are and tends to forget the less frequent class’ properties all together during training. 
+
+<!-- What is target variable in balancing class -->
 
 To ensure that this does not happen, we must make sure that there are equal numbers of examples for both the cases. Here, we randomly sample a subset of the data where the class is “yes”, as it is the class with higher frequency and append it to the observations with the class “no” to generate a new, minified training set with equal number of “yes” and “no” observations. This process is called under-sampling. This brings down the size of our dataset to 9330 observations total. Even though it is only a fraction of the original 54,690, it is still a significant amount and should be enough to train our algorithms along with being balanced. The distribution of class percentage before and after under sampling is shown in @fig:class_balancing.
 
@@ -88,13 +109,17 @@ Distribution of *is_promoted* class before and after undersampling
 
 The dataset is split into a training set and a testing set where the testing set contains 1/5ths of the records in the dataset while the rest belong to the training set. The resultant training and testing sets will therefore have 7464 and 1866 observations respectively.
 
-A Random Forest(RF) and XGBoost(XGB) model will be will be trained on the training set and be evaluated using the K-fold cross-validation method for the testing set. In this case, the value of K is taken to be 5. Confusion matrices will be generated for both models, which will help us determine the accuracy with which the models classify observations as *yes* or *no*.
+<!-- Why k-value was assigned to 5? Justify it with proper evidence and final value is 28. -->
+ 
+A Random Forest(RF) and XGBoost(XGB) model will be will be trained on the training set and be evaluated using the K-fold cross-validation method for the testing set. In this case, the value of K is taken to be 5. Confusion matrices will be generated for both models, which will help us determine the confidence with which the models classify observations as *yes* or *no*.
 
 ### Random Forest
 
 The Random Forest is a supervised learning approach that utilizes multiple Decision Trees, each representing a feature or label in the dataset in a random order, to arrive at its final conclusion. The final prediction of the RF model is dependant on the decision trees present in the model. The prediction from each individual tree stored and are polled in the end. The prediction at the end with the highest frequency is selected.
 
 The main drawback with decision trees is their low bias and high variance. The Random Forest algorithm uses this drawback to its advantage and utilizes multiple trees with slight variations. This helps prevent the model from overfitting and allows it to handle much more complex data than decision trees.
+
+<!-- Explain mtry -->
 
 The trained RF model yielded tuning parameters which are tabulated in @tbl:rf_params. *Accuracy* was used to select the optimal model using the largest value. The final value used for the model was *mtry* = 28. The Confusion Matrix plots for the predictions from the RF model can be seen in @fig:rf_cf.
 
@@ -160,8 +185,8 @@ The *Accuracy* and *Kappa* values of both models are very similar, indicating th
 Both models assign an 'Feature Importance' score to each attribute, which is calculated by the amount that the particular attribute's split point improves the performance measure, weighed by then number of observations the node is responsible for. In our case, the performance measure is the *Gini Index*, which is used to select the splits points. The plots of the 20 most important attributes according to the RF model and the XGB model can be seen in @fig:rf_imp and @fig:xgb_imp respectively.
 
 ::: {#fig:imp_feats}
-![Feature importance plot from RF model](./imgs/rf_feat_imp.png "rf_feat_imp.png"){#fig:rf_imp width=80% height=40%}\
-![Feature Importance plot from XGB model](./imgs/xb_feat_imp.png "xb_feat_imp.png"){#fig:xgb_imp width=80% height=40%}
+![Feature importance plot from RF model](./imgs/rf_feat_imp.png "rf_feat_imp.png"){#fig:rf_imp width=80% height=35%}\
+![Feature Importance plot from XGB model](./imgs/xb_feat_imp.png "xb_feat_imp.png"){#fig:xgb_imp width=80% height=35%}
 
 20 most important features as scored by the RF and XGB models
 :::
@@ -170,6 +195,7 @@ Both models assign an 'Feature Importance' score to each attribute, which is cal
 
 We notice that the list of the 10 most important features according to both the Random Forest and XGBoost models are nearly identical with the exception of no_of_trainings and departmentHR. This tells us that the other attributes can be discarded to get improved performance from the models. 
 
+\newpage
 # Conclusion
 
 In this paper, we have demonstrated the use of the Random Forest and XGBoost machine learning algorithms in predicting an employee's promotion status. We also used the trained models to determine which attributes have the most impact on said promotion status. Through this, we can see the use of machine learning as a predictive decision making tool or at least a suggestive tool is a fully viable solution for the presented problem. With fairly limited data and computational resources, we were able to train algorithms to perform with significantly good accuracy. 

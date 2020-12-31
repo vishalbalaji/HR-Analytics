@@ -8,6 +8,7 @@
 \usepackage{float}
 \usepackage[labelfont=bf]{caption}
 \usepackage{subfig}
+\usepackage{cite}
 \emergencystretch=1em
 % use upquote if available, for straight quotes in verbatim environments
 
